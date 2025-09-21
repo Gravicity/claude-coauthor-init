@@ -175,8 +175,20 @@ Create domain-appropriate automation:
 - `test-all.sh` - Run complete test suite
 - `deploy.sh` - Deploy to production
 - `component-generator.sh` - Batch component creation
+- **`setup_[domain].sh`** - Scaffold script to create multiple projects from this template
 
-### Step 7: Documentation
+### Step 7: Scaffolding Command
+
+Create a setup command for the generated toolkit (e.g., `/setup-[domain]`):
+- Allows users to create multiple projects from the template
+- Copies the entire structure to a new directory
+- Updates project-specific configurations
+- Initializes git repository
+- Similar to how `/setup-coauthor` works for book projects
+
+Example: `/setup-nextjs my-landing-page` creates a new instance from the Next.js toolkit template
+
+### Step 8: Documentation
 
 Generate PROJECT.md with:
 1. Domain-specific mission statement
