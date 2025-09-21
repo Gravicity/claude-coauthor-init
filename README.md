@@ -38,7 +38,7 @@ Works for any domain:
 
 1. **Clone this repository:**
    ```bash
-   git clone https://github.com/yourusername/claude-coauthor-init.git
+   git clone https://github.com/Gravicity/claude-coauthor-init.git
    cd claude-coauthor-init
    ```
 
@@ -228,7 +228,7 @@ Based on:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/claude-coauthor-init.git
+git clone https://github.com/Gravicity/claude-coauthor-init.git
 cd claude-coauthor-init
 
 # 2. Start Claude Code in this directory
