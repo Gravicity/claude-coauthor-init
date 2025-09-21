@@ -1,0 +1,25 @@
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+
+# Environment files
+.env
+.env.local
+
+# Generated toolkits (uncomment if you want to exclude them from repo)
+# *-toolkit/
+# *-project/
+
+# Logs
+*.log
