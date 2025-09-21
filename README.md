@@ -24,6 +24,7 @@ This is a **meta-framework generator** - it creates complete AI-assisted develop
 - Sets up proper file structures
 - Configures permissions correctly
 - Includes automation scripts
+- **Generates scaffolding command** to create multiple projects from your toolkit
 
 ### Universal Application
 Works for any domain:
@@ -106,6 +107,7 @@ Once your toolkit is created:
    - View available commands with `/help`
    - Check agents with `@help`
    - Read PROJECT.md for guidelines
+   - Use the generated setup command (e.g., `/setup-nextjs`) to scaffold new projects
 
 ## 📂 What Gets Generated
 
@@ -121,9 +123,11 @@ your-toolkit/
 │   ├── agents/          # Specialized AI agents
 │   ├── output-styles/   # Communication modes
 │   └── settings.json    # Proper permissions
-├── bin/                 # Automation scripts
+├── bin/                 # Automation scripts & setup command
 ├── PROJECT.md           # Project guidelines
 └── README.md            # Getting started guide
+
+**Plus a scaffolding command** like `/setup-nextjs` that lets you create multiple projects from this toolkit template!
 ```
 
 ## 🤖 How It Works
@@ -133,7 +137,8 @@ your-toolkit/
 3. **Report Generation**: Creates a comprehensive toolkit specification
 4. **Toolkit Creation**: Generates all files, agents, and commands
 5. **Configuration**: Sets up proper permissions and settings
-6. **Documentation**: Creates guides and examples
+6. **Scaffolding Command**: Creates a setup command for the toolkit
+7. **Documentation**: Creates guides and examples
 
 ## 📚 Documentation Structure
 
@@ -176,6 +181,27 @@ Stores metadata in project.json:
   "agents": {...}
 }
 ```
+
+## 🔄 Reusing Your Toolkit
+
+Each generated toolkit includes its own scaffolding command! After creating a toolkit, you can use it as a template:
+
+```bash
+# Example: If you generated a Next.js toolkit
+cd nextjs-toolkit
+claude
+
+# Now create multiple projects from this template:
+/setup-nextjs my-first-landing
+/setup-nextjs my-second-app
+/setup-nextjs client-project
+```
+
+Each scaffolded project gets:
+- All the agents and commands from your toolkit
+- Proper directory structure
+- Configured settings
+- Ready-to-use automation scripts
 
 ## 🛠️ Customization
 
