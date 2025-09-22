@@ -26,12 +26,21 @@ Researches new domains and creates comprehensive toolkit reports when no existin
 4. **Configure**: Set up proper permissions and settings
 5. **Document**: Provide clear instructions and examples
 
-## Domain Reports
+## Domain Report Examples
 
-Reports are stored in `.claude/docs/`:
-- `Branch_Co-authoring_AI_prompt.md` - Book/manuscript writing toolkit
-- `nextjs_toolkit_report_example.md` - Web development example
-- New domains are researched and documented automatically
+The `.claude/docs/` folder contains reference examples that demonstrate expected quality:
+- **Branch_Co-authoring_AI_prompt.md** - Comprehensive toolkit example (~300 lines)
+- **nextjs_toolkit_report_example.md** - Production-grade web toolkit (~900 lines)
+
+These serve as quality benchmarks for all generated toolkit reports:
+- 500-900 lines of detailed, substantive content
+- 15+ authoritative references with descriptions
+- Extensive code examples and implementation details
+- Complete sections without placeholders
+
+When users provide custom examples or templates in `.claude/docs/` or reference specific folders, they're incorporated as additional requirements for the toolkit generation.
+
+New domains are researched through multiple rounds to match this quality standard.
 
 ## Important Notes
 

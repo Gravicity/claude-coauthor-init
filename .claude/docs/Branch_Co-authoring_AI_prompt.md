@@ -1,3 +1,9 @@
+---
+NOTE: This is a reference example for the coauthor-init system.
+It demonstrates the expected structure, depth, and quality for domain toolkit reports.
+When creating new toolkit reports, aim for ~300-500 lines of substantive content.
+---
+
 # **Designing the Ultimate Claude Code Co‑Authoring Toolkit**
 
 ### **Introduction**
@@ -18,7 +24,7 @@ book-project/
 │   ├── commands/      # Custom slash commands (see §6)
 │   ├── agents/        # Sub‑agent definitions (see §4)
 │   ├── output-styles/ # Custom output styles (see §3)
-│   └── settings.json  # Permissions, hooks and project settings
+│   └── settings.json  # Permissions and core settings
 └── CLAUDE.md          # Project memory and style guide (see §2)
 ```
 
@@ -123,49 +129,55 @@ The settings.json must follow strict format requirements. Many fields that seem 
 
 This configuration automatically accepts file edits in the manuscript directory, asks before running Pandoc or committing, and denies reading sensitive files.
 
-## **7. Hooks for Automation**
+## **7. Hooks for Automation (Advanced)**
 
-Hooks execute shell commands at key events (PreToolUse, PostToolUse, Notification, Stop). They ensure deterministic automation independent of Claude's memory.
+Hooks execute shell commands at key events, enabling powerful automation workflows. They are configured as **separate hook scripts**, NOT in settings.json.
 
-**IMPORTANT: New Hook Format (Claude Code 1.0+)**
+**IMPORTANT: Hooks are an advanced feature and NOT stored in settings.json**
 
-Hooks now require a matcher format with arrays. Here's the correct structure:
+Hooks are configured as executable scripts that Claude Code can run at various events:
+- **PreToolUse**: Before a tool executes (can block or modify)
+- **PostToolUse**: After a tool completes
+- **UserPromptSubmit**: When user submits a prompt
+- **Stop/SessionEnd**: At session termination
+- **Notification**: For custom notifications
 
+**Example Hook Script for Book Projects:**
+
+Create a file like `.claude/hooks/post-edit-hook.sh`:
+```bash
+#!/bin/bash
+# Triggered after editing manuscript files
+if [[ "$1" == *"manuscript/"* ]]; then
+  # Run prose linter
+  proselint manuscript/*.md 2>/dev/null || true
+  # Update word count
+  wc -w manuscript/*.md > assets/word_count.txt
+fi
+```
+
+**Hook Configuration (in project.json or PROJECT.md):**
 ```json
 {
   "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": {
-          "tools": ["Edit"]
-        },
-        "hooks": [
-          {
-            "type": "command",
-            "command": "proselint manuscript/*.md 2>/dev/null || true",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat manuscript/ch*.md > assets/full_manuscript.md",
-            "timeout": 60
-          }
-        ]
-      }
-    ]
+    "PostToolUse": {
+      "Edit": ".claude/hooks/post-edit-hook.sh"
+    },
+    "SessionEnd": ".claude/hooks/compile-manuscript.sh"
   }
 }
 ```
 
-**Note**: SubAgentStop is no longer valid. Use the events: PreToolUse, PostToolUse, Stop, SessionStart, SessionEnd.
+**For Book Co-authoring, useful hooks might:**
+- Auto-compile full manuscript after each session
+- Run grammar/style checks after edits
+- Update table of contents when chapters change
+- Generate PDF preview after major revisions
+- Backup versions to git automatically
 
-For simpler setups, consider using a `settings-simple.json` without hooks to avoid validation errors.
+**Note**: For simpler setups, skip hooks entirely. They're optional and can be added later as needed.
+
+📚 **Learn more about hooks**: https://docs.claude.com/en/docs/claude-code/configuration/hooks
 
 ## **8. Integrating External Tools via MCP**
 

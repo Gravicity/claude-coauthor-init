@@ -24,45 +24,93 @@ This command creates complete AI-assisted development toolkits for any domain by
 
 ## Process Flow
 
-### Phase 1: Domain Analysis
-1. **Parse user input** to understand the domain (web, mobile, data science, writing, etc.)
-2. **Check `.claude/docs/` for existing domain reports**
-3. **If no report exists**, launch domain-researcher agent to create one
-4. **Load or generate** the domain-specific toolkit report
+This overview maps to specific implementation steps below:
 
-### Phase 2: Toolkit Generation
-Based on the report, create:
-1. **Directory structure** appropriate for the domain
-2. **Sub-agents** specialized for domain tasks
-3. **Custom commands** for common workflows
-4. **Output styles** for communication modes
-5. **Automation scripts** for batch operations
-6. **Configuration files** with correct formats
+### Phase 1: Domain Understanding (→ Steps 1, 2, 2b)
+1. **Engage with user** to clarify requirements (Step 1)
+2. **Analyze existing examples** in `.claude/docs/` as references (Step 2)
+3. **Research domain** if needed via domain-researcher agent (Step 2b)
 
-### Phase 3: Project Setup
-1. Initialize git repository
-2. Create README with quickstart guide
-3. Set up example workflows
-4. Configure default permissions
-5. Add domain-specific templates
+### Phase 2: Toolkit Generation (→ Steps 3-8)
+Based on research and user requirements:
+1. **Directory structure** appropriate for the domain (Step 3)
+2. **Sub-agents** specialized for domain tasks (Step 4)
+3. **Custom commands** for common workflows (Step 5)
+4. **Configuration files** with correct formats (Step 6)
+5. **Optional scripts** if domain requires (Step 7)
+6. **Scaffolding command** for reusability (Step 8)
+
+### Phase 3: Finalization (→ Steps 9-10)
+1. **Documentation** with guidelines (Step 9)
+2. **Validation** and testing instructions (Step 10)
 
 ## Implementation Instructions
 
 When executed, follow these steps:
 
-### Step 1: Domain Assessment
-```python
-# Pseudo-logic for domain detection
-if "book" or "manuscript" or "writing" in domain_description:
-    report = ".claude/docs/Branch_Co-authoring_AI_prompt.md"
-elif exists(f".claude/docs/{domain}_toolkit_report.md"):
-    report = f".claude/docs/{domain}_toolkit_report.md"
-else:
-    # Launch domain researcher
-    report = research_domain(domain_description)
+### Step 1: User Engagement and Clarification
+
+Engage with the user to understand their specific needs based on `$domain_description`:
+
+**Generate clarifying questions relative to their input:**
+```
+User: "$domain_description"
+Claude: "I'll help create a toolkit for $domain_description. To make it perfect for your needs:
+[Generate 3-5 relevant questions based on their specific domain]
 ```
 
-### Step 2: Directory Creation
+**Check for custom resources:**
+- If user mentions a folder path → read and analyze it
+- If user references `.md` files → incorporate as requirements
+- If user has existing project structure → use as template
+
+**Example interactions:**
+- Input: "React Native toolkit"
+  → Ask about: iOS/Android focus, Expo vs bare, state management, UI libraries
+- Input: "Python data science toolkit"
+  → Ask about: Jupyter/scripts, ML frameworks, visualization needs, deployment targets
+- Input: "using template in /my-template"
+  → Read the template structure and ask about modifications needed
+
+### Step 2: Domain Assessment and Example Analysis
+
+1. **List ALL files in `.claude/docs/`** - these serve as reference examples for quality
+2. **Read existing toolkit reports** to understand expected structure:
+   - `Branch_Co-authoring_AI_prompt.md` - comprehensive example (~300 lines)
+   - `nextjs_toolkit_report_example.md` - detailed web patterns (~900 lines)
+   - Any other `.md` files = potential user examples or custom requirements
+3. **Analyze user's custom resources** (if provided):
+   - Read folder structures they reference
+   - Incorporate boilerplate code patterns
+   - Extract conventions and preferences
+4. **Determine approach**:
+   - These are EXAMPLES of quality, not rigid templates
+   - Each toolkit should be tailored to the specific domain
+   - If new domain → proceed to Step 2b for research
+
+### Step 2b: Launching Domain Researcher
+
+When domain research is needed, launch with full context:
+```
+@domain-researcher Create comprehensive toolkit report for: "$domain_description"
+
+Context from user engagement:
+- [Include all clarification answers from Step 1]
+- [Reference any custom templates: $paths]
+
+Quality requirements:
+- Match depth of example reports (~500-900 lines of substantive content)
+- Include 15+ authoritative references
+- Provide code examples and implementation details
+- Research current best practices (2024-2025)
+```
+
+When domain-researcher completes:
+1. Read the generated report from `.claude/docs/`
+2. Extract key sections (agents, commands, structure)
+3. Use as blueprint for remaining generation steps
+
+### Step 3: Directory Creation
 
 Create structure based on domain. Examples:
 
@@ -94,7 +142,7 @@ project-name/
 └── PROJECT.md
 ```
 
-### Step 3: Agent Generation
+### Step 4: Agent Generation
 
 Create agents based on domain needs:
 
@@ -111,7 +159,7 @@ Create agents based on domain needs:
 - `visualizer` - Creates charts and plots
 - `report-generator` - Documents findings
 
-### Step 4: Command Creation
+### Step 5: Command Creation
 
 Generate domain-specific commands:
 
@@ -126,7 +174,7 @@ Generate domain-specific commands:
 - `/generate-api` - Creates API service layer
 - `/test-device <platform>` - Platform-specific testing
 
-### Step 5: Configuration Files
+### Step 6: Configuration Files
 
 #### settings.json (MUST use correct format):
 ```json
@@ -148,8 +196,7 @@ Generate domain-specific commands:
       "Bash(rm -rf:*)",
       "Bash(sudo:*)"
     ]
-  },
-  "outputStyle": "default"
+  }
 }
 ```
 
@@ -166,29 +213,29 @@ Generate domain-specific commands:
 }
 ```
 
-### Step 6: Shell Scripts
+### Step 7: Domain-Specific Scripts (Optional)
 
-Create domain-appropriate automation:
+Only create shell scripts if the domain specifically requires them:
 
-**For Web:**
-- `build.sh` - Build production bundle
-- `test-all.sh` - Run complete test suite
-- `deploy.sh` - Deploy to production
-- `component-generator.sh` - Batch component creation
-- **`setup_[domain].sh`** - Scaffold script to create multiple projects from this template
+**Examples:**
+- Web projects might need deployment scripts
+- Data science might need data processing scripts
+- Mobile apps might need build scripts
 
-### Step 7: Scaffolding Command
+**Note:** The scaffolding command (Step 7) is a Claude command, not a shell script
+
+### Step 8: Scaffolding Command
 
 Create a setup command for the generated toolkit (e.g., `/setup-[domain]`):
 - Allows users to create multiple projects from the template
 - Copies the entire structure to a new directory
 - Updates project-specific configurations
 - Initializes git repository
-- Similar to how `/setup-coauthor` works for book projects
+- Similar to how `.claude/commands/setup-coauthor-example` works for book projects
 
 Example: `/setup-nextjs my-landing-page` creates a new instance from the Next.js toolkit template
 
-### Step 8: Documentation
+### Step 9: Documentation
 
 Generate PROJECT.md with:
 1. Domain-specific mission statement
@@ -196,6 +243,16 @@ Generate PROJECT.md with:
 3. Workflow guidelines
 4. Command reference
 5. **CRITICAL**: Instructions to start Claude Code from project directory
+
+### Step 10: Validation
+1. **Verify JSON files** are valid (settings.json, project.json if created)
+2. **Check command files** exist in `.claude/commands/`
+3. **Ensure PROJECT.md** was created with guidelines
+4. **Note for user**: Test the scaffolding command by:
+   - Exit Claude Code
+   - Navigate to generated project: `cd [project-name]`
+   - Start Claude from within: `claude`
+   - Try the scaffolding command: `/setup-[domain] test-project`
 
 ## Domain Examples
 
